@@ -320,6 +320,13 @@ resource "google_project_iam_binding" "set_bq_jb_binding" {
   
 }
 
+resource "google_project_iam_binding" "set_ee_binding" {
+  project = var.project_id
+  role               = "roles/earthengine.writer"
+  members  =  ["serviceAccount:${var.project_id}@appspot.gserviceaccount.com"]
+  
+}
+
 /******************************************
 11. Earth Engine Python API installation
  *****************************************/
