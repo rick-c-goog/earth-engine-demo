@@ -319,11 +319,19 @@ resource "google_project_iam_binding" "set_bq_jb_binding" {
   members  =  ["serviceAccount:${var.project_id}@appspot.gserviceaccount.com"]
   
 }
+# Gets the default Compute Engine Service Account of GKE
+data "google_project" "project" {
+  project_id = var.project_id
+}
+
+data "google_compute_default_service_account" "default" {
+  project = data.google_project.project.project_id
+}
 
 resource "google_project_iam_binding" "set_ee_binding" {
   project = var.project_id
   role               = "roles/earthengine.writer"
-  members  =  ["serviceAccount:${var.project_id}@appspot.gserviceaccount.com"]
+  members  =  ["serviceAccount:${data.google_compute_default_service_account.default.email}"]
   
 }
 
